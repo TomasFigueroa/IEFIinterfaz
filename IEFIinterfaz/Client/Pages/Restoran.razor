@@ -1,0 +1,130 @@
+﻿@page "/modern-menu"
+@using OfficeOpenXml
+@inject IJSRuntime JS
+
+<div class="main-container">
+    <!-- Sección de Lista de Precios a la izquierda -->
+    <div class="price-list">
+        <h4>Lista de Precios</h4>
+        @foreach (var item in MenuItems)
+        {
+            <div class="price-item">
+                <span>@item.Name</span>
+                <span>$@item.Price.ToString("F2")</span>
+            </div>
+        }
+    </div>
+
+    <!-- Sección de Cantidades a la derecha -->
+    <div class="quantity-control">
+        <h4>Ajustar Cantidades</h4>
+        @foreach (var item in MenuItems)
+        {
+            <div class="quantity-item">
+                <span>@item.Name</span>
+                <button @onclick="() => DecreaseQuantity(item)" class="adjust-button">-</button>
+                <span>@item.Quantity</span>
+                <button @onclick="() => IncreaseQuantity(item)" class="adjust-button">+</button>
+            </div>
+        }
+        <button @onclick="CalculateTotal" class="calculate-button">Calcular Ventas e Impuestos</button>
+    </div>
+</div>
+
+
+@if (showResults)
+{
+    <div class="modal-overlay" @onclick="CloseModal">
+        <div class="modal-content" @onclick:stopPropagation="true">
+            <h4>Resumen del Día</h4>
+            <p>Ventas Totales: $@totalSales.ToString("F2")</p>
+            <p>Impuestos (18%): $@taxAmount.ToString("F2")</p>
+            <p>Ingresos Netos: $@netIncome.ToString("F2")</p>
+            <button @onclick="ExportToExcel" class="export-button">Exportar a Excel</button>
+            <button @onclick="CloseModal" class="close-button">Cerrar</button>
+        </div>
+    </div>
+}
+
+@code {
+    // Modelo para los elementos del menú
+    public class MenuItem
+    {
+        public string Name { get; set; }
+        public decimal Price { get; set; }
+        public int Quantity { get; set; }
+    }
+
+    private List<MenuItem> MenuItems = new List<MenuItem>
+    {
+        new MenuItem { Name = "Hamburguesa", Price = 5.99m },
+        new MenuItem { Name = "Pizza", Price = 7.99m },
+        new MenuItem { Name = "Bebida", Price = 1.99m },
+        new MenuItem { Name = "Papas Fritas", Price = 2.50m },
+        new MenuItem { Name = "Helado", Price = 3.00m }
+    };
+    private void IncreaseQuantity(MenuItem item)
+    {
+        item.Quantity++;
+    }
+
+    private void DecreaseQuantity(MenuItem item)
+    {
+        if (item.Quantity > 0)
+        {
+            item.Quantity--;
+        }
+    }
+    private decimal totalSales = 0m;
+    private decimal taxAmount = 0m;
+    private decimal netIncome = 0m;
+    private bool showResults = false;
+
+    private void CalculateTotal()
+    {
+        totalSales = MenuItems.Sum(item => item.Quantity * item.Price);
+        taxAmount = totalSales * 0.18m;
+        netIncome = totalSales - taxAmount;
+        showResults = true;
+    }
+
+    private void CloseModal()
+    {
+        showResults = false;
+    }
+
+    private async Task ExportToExcel()
+    {
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+        using var package = new ExcelPackage();
+        var worksheet = package.Workbook.Worksheets.Add("Resumen del Día");
+
+        // Encabezados y Datos
+        worksheet.Cells[1, 1].Value = "Descripción";
+        worksheet.Cells[1, 2].Value = "Monto";
+        worksheet.Cells[2, 1].Value = "Ventas Totales";
+        worksheet.Cells[2, 2].Value = totalSales;
+        worksheet.Cells[3, 1].Value = "Impuestos (18%)";
+        worksheet.Cells[3, 2].Value = taxAmount;
+        worksheet.Cells[4, 1].Value = "Ingresos Netos";
+        worksheet.Cells[4, 2].Value = netIncome;
+
+        worksheet.Cells[1, 1, 4, 2].AutoFitColumns();
+
+        // Convertir el archivo a formato Base64
+        var fileContent = package.GetAsByteArray();
+        var base64ExcelData = Convert.ToBase64String(fileContent);
+        var fileName = "VentasDelDia.xlsx";
+
+        // Invocación de la función de JavaScript para descargar el archivo
+        await JS.InvokeVoidAsync("downloadExcelFile", base64ExcelData, fileName);
+    }
+}
+
+
+
+
+
+
+
