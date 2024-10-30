@@ -1,0 +1,94 @@
+﻿@page "/matricula"
+
+<h3>Registro de Matrícula</h3>
+<div class="card p-4 mb-4">
+    <div class="form-group">
+        <label>Curso</label>
+        <select class="form-control">
+            <option>Curso de Programación Básica</option>
+            <option>Curso de Programación Avanzada</option>
+            <option>Curso de Diseño Web</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Fecha de Matrícula</label>
+        <input type="date" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Apellidos y Nombres</label>
+        <input type="text" class="form-control" placeholder="Escribe el nombre completo" />
+    </div>
+    <div class="form-group">
+        <label>Género</label>
+        <div>
+            <input type="radio" name="gender" value="Masculino" /> Masculino
+            <input type="radio" name="gender" value="Femenino" /> Femenino
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Dirección</label>
+        <input type="text" class="form-control" placeholder="Dirección completa" />
+    </div>
+    <div class="form-group">
+        <label>Localidad</label>
+        <select class="form-control">
+            <option>Córdoba</option>
+            <option>Villa María</option>
+            <option>Río Cuarto</option>
+        </select>
+    </div>
+    <button class="btn btn-primary mt-3" @onclick="GuardarMatricula">Guardar</button>
+</div>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+}
+
+.card {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+}
+
+.form-control, .form-group select {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 1rem;
+    margin-top: 5px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+</style>
+@code {
+    void GuardarMatricula()
+    {
+        // Lógica para guardar la matrícula
+        Console.WriteLine("Matrícula guardada.");
+    }
+}

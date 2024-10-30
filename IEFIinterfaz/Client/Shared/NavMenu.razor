@@ -1,31 +1,26 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">IEFIinterfaz</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+﻿<div class="d-flex flex-column vh-100 bg-primary text-white">
+    <div class="navbar-brand p-3">
+        <a href="" class="text-white fs-4 text-decoration-none">IEFIinterfaz</a>
     </div>
-</div>
-
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
+    <nav class="nav flex-column mt-4">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
+            <NavLink class="nav-link text-white" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home me-2" aria-hidden="true"></span> Home
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
+            <NavLink class="nav-link text-white" href="matricula">
+                <span class="oi oi-plus me-2" aria-hidden="true"></span> Counter
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="modern-menu">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Restoran
+            <NavLink class="nav-link text-white" href="modern-menu">
+                <span class="oi oi-list-rich me-2" aria-hidden="true"></span> Restoran
             </NavLink>
         </div>
     </nav>
 </div>
+
 
 @code {
     private bool collapseNavMenu = true;

@@ -17,15 +17,19 @@
 
     <!-- Sección de Cantidades a la derecha -->
     <div class="quantity-control">
-        <h4>Ajustar Cantidades</h4>
+        <h4>Ventas</h4>
         @foreach (var item in MenuItems)
         {
-            <div class="quantity-item">
-                <span>@item.Name</span>
-                <button @onclick="() => DecreaseQuantity(item)" class="adjust-button">-</button>
-                <span>@item.Quantity</span>
-                <button @onclick="() => IncreaseQuantity(item)" class="adjust-button">+</button>
+            <div class="quantity-container">
+                <span class="item-name">@item.Name</span>
+                <div class="button-group">
+                    <button @onclick="() => DecreaseQuantity(item)" class="adjust-button">-</button>
+                    <span class="quantity-value">@item.Quantity</span>
+                    <button @onclick="() => IncreaseQuantity(item)" class="adjust-button">+</button>
+                </div>
             </div>
+
+          
         }
         <button @onclick="CalculateTotal" class="calculate-button">Calcular Ventas e Impuestos</button>
     </div>
