@@ -1,7 +1,9 @@
 ﻿@page "/modern-menu"
 @using OfficeOpenXml
 @inject IJSRuntime JS
-
+<div class="header">
+    <h1>Restaurant Don Tomas</h1>
+</div>
 <div class="main-container">
     <!-- Sección de Lista de Precios a la izquierda -->
     <div class="price-list">
@@ -9,11 +11,13 @@
         @foreach (var item in MenuItems)
         {
             <div class="price-item">
+                <img src="@item.ImageUrl" alt="@item.Name" class="food-image" />
                 <span>@item.Name</span>
                 <span>$@item.Price.ToString("F2")</span>
             </div>
         }
     </div>
+
 
     <!-- Sección de Cantidades a la derecha -->
     <div class="quantity-control">
@@ -23,7 +27,7 @@
             <div class="quantity-container">
                 <span class="item-name">@item.Name</span>
                 <div class="button-group">
-                    <button @onclick="() => DecreaseQuantity(item)" class="adjust-button">-</button>
+                    <button @onclick="() => DecreaseQuantity(item)" class="adjust-butto">-</button>
                     <span class="quantity-value">@item.Quantity</span>
                     <button @onclick="() => IncreaseQuantity(item)" class="adjust-button">+</button>
                 </div>
@@ -49,6 +53,36 @@
         </div>
     </div>
 }
+<style>
+    .header {
+        background: linear-gradient(90deg, #5C9E3D, #82C450); /* Degradado de verde */
+        color: #ffffff;
+        text-align: center;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border-bottom: 4px solid #8B4513; /* Marrón oscuro como borde inferior */
+    }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+    .food-image {
+        width: 50px; /* Ajusta el tamaño de la imagen */
+        height: 50px;
+        object-fit: cover;
+        border-radius: 8px; /* Bordes redondeados */
+        margin-right: 10px; /* Espacio entre la imagen y el texto */
+        vertical-align: middle;
+    }
+
+
+</style>
 
 @code {
     // Modelo para los elementos del menú
@@ -57,16 +91,19 @@
         public string Name { get; set; }
         public decimal Price { get; set; }
         public int Quantity { get; set; }
+        public string ImageUrl { get; set; } // Nueva propiedad para la URL de la imagen
     }
 
+
     private List<MenuItem> MenuItems = new List<MenuItem>
-    {
-        new MenuItem { Name = "Hamburguesa", Price = 5.99m },
-        new MenuItem { Name = "Pizza", Price = 7.99m },
-        new MenuItem { Name = "Bebida", Price = 1.99m },
-        new MenuItem { Name = "Papas Fritas", Price = 2.50m },
-        new MenuItem { Name = "Helado", Price = 3.00m }
-    };
+{
+    new MenuItem { Name = "Hamburguesa", Price = 5.99m, ImageUrl = "https://img.freepik.com/foto-gratis/deliciosa-hamburguesa-3d-fondo-simple_23-2150914809.jpg" },
+    new MenuItem { Name = "Pizza", Price = 7.99m, ImageUrl = "https://i.pinimg.com/474x/4f/8d/34/4f8d34155316b5311fb1b8353beb096f.jpg" },
+    new MenuItem { Name = "Bebida", Price = 1.99m, ImageUrl = "https://media.istockphoto.com/id/509894197/es/foto/coca-cola-fanta-and-sprite-frascos-sobre-el-fondo-blanco.jpg?s=612x612&w=0&k=20&c=knDofd9BcGgM4OAgvFO0bsu_qyka9uSZd8LBtqrs2ko=" },
+    new MenuItem { Name = "Papas Fritas", Price = 2.50m, ImageUrl = "https://i.pinimg.com/736x/03/86/2d/03862d4fa47e0eb5f228585198b30c06.jpg" },
+    new MenuItem { Name = "Helado", Price = 3.00m, ImageUrl = "https://png.pngtree.com/png-vector/20230321/ourlarge/pngtree-ice-cream-dessert-realistic-white-background-transparent-png-image_6656573.png" }
+};
+
     private void IncreaseQuantity(MenuItem item)
     {
         item.Quantity++;
